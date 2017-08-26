@@ -24,7 +24,7 @@ const MainContainer = glamorous(View)({
 
 const Main = () =>
     <MainContainer>
-        <TandemGift />
+        <TandemGift name="Esa-Matti Suuronen" id={1234} date={new Date()} />
     </MainContainer>;
 
 export default Main;

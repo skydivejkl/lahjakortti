@@ -1,5 +1,6 @@
 import React from "react";
 import glamorous from "glamorous";
+import moment from "moment";
 
 import {View} from "./core";
 
@@ -93,7 +94,25 @@ const SignLine = glamorous(Line)({
     width: 250,
 });
 
-const TandemGift = () =>
+const FooterText = glamorous(View)<{bold?: boolean}>(
+    {
+        fontSize: 10,
+    },
+    props => ({fontWeight: props.bold ? "bold" : "normal"}),
+);
+
+const Footer = glamorous(View)({
+    position: "absolute",
+    bottom: 1,
+});
+
+interface ITandemGift {
+    name: string;
+    id: number;
+    date: Date;
+}
+
+const TandemGift = (props: ITandemGift) =>
     <CardContainer>
         <Background />
         <Logo />
@@ -101,7 +120,9 @@ const TandemGift = () =>
             <Title>LAHJAKORTTI</Title>
             <Line />
             <Text>Tämän lahjakortin saaja</Text>
-            <Title>Tandem Hyppääjä</Title>
+            <Title>
+                {props.name}
+            </Title>
             <Text>on oikeutettu tandemhyppykurssiin</Text>
             <TextSmall>(sisältää koulutuksen ja tandemhypyn)</TextSmall>
 
@@ -111,6 +132,17 @@ const TandemGift = () =>
                 <TextSmall>Jyväskylän Laskuvarjokerho Ry</TextSmall>
             </Sign>
         </TextContainer>
+        <Footer>
+            <FooterText bold>
+                #{props.id}
+            </FooterText>
+            <FooterText>
+                , voimassa{" "}
+                {moment(props.date).add(2, "years").format("MM/YYYY")} saakka —
+                ilmoittautuminen kurssille www.skydivejkl.fi/tandem, tiedustelut
+                045 323 4200{" "}
+            </FooterText>
+        </Footer>
     </CardContainer>;
 
 export default TandemGift;
