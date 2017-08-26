@@ -1,6 +1,8 @@
 import React from "react";
+import qs from "qs";
 import glamorous from "glamorous";
 import {css} from "glamor";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 
 import {View} from "./core";
 import TandemGift from "./TandemGift";
@@ -16,15 +18,45 @@ const MainContainer = glamorous(View)({
     left: 0,
     right: 0,
     bottom: 0,
-
-    backgroundColor: "red",
     alignItems: "center",
-    justifyContent: "center",
+});
+
+interface IGiftProps {
+    name: string;
+    id: string;
+    email: string;
+}
+
+const parseQS = (search: string): IGiftProps => {
+    const ob: {
+        [key: string]: string | undefined;
+    } = qs.parse(search.slice(1));
+    return {
+        name: ob.name || "",
+        id: ob.id || "",
+        email: ob.email || "",
+    };
+};
+
+const Button = glamorous.button({
+    padding: 20,
+    margin: 40,
 });
 
 const Main = () =>
-    <MainContainer>
-        <TandemGift name="Esa-Matti Suuronen" id={1234} date={new Date()} />
-    </MainContainer>;
+    <Router>
+        <Route
+            path="/tandem"
+            exact
+            render={props =>
+                <MainContainer>
+                    <Button>render pdf</Button>
+                    <TandemGift
+                        {...parseQS(props.location.search)}
+                        date={new Date()}
+                    />
+                </MainContainer>}
+        />
+    </Router>;
 
 export default Main;

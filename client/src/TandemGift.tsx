@@ -21,7 +21,7 @@ const TextContainer = glamorous(View)({
     flexDirection: "column",
     marginTop: 130,
     textAlign: "center",
-    alignItems: "center",
+    justifyContent: "center",
     width: 400,
 });
 
@@ -32,7 +32,7 @@ const CardContainer = glamorous(View)({
     overflow: "hidden",
     backgroundColor: "white",
 
-    justifyContent: "center",
+    alignItems: "center",
 });
 
 const Title = glamorous(View)({
@@ -108,7 +108,7 @@ const Footer = glamorous(View)({
 
 interface ITandemGift {
     name: string;
-    id: number;
+    id: string;
     date: Date;
 }
 
