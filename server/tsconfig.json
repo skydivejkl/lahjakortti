@@ -5,6 +5,7 @@
         "outDir": "dist",
         "module": "commonjs",
         "declaration": true,
+        "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
         "noUnusedLocals": true,
