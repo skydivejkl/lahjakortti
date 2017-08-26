@@ -112,37 +112,43 @@ interface ITandemGift {
     date: Date;
 }
 
-const TandemGift = (props: ITandemGift) =>
-    <CardContainer>
-        <Background />
-        <Logo />
-        <TextContainer>
-            <Title>LAHJAKORTTI</Title>
-            <Line />
-            <Text>Tämän lahjakortin saaja</Text>
-            <Title>
-                {props.name}
-            </Title>
-            <Text>on oikeutettu tandemhyppykurssiin</Text>
-            <TextSmall>(sisältää koulutuksen ja tandemhypyn)</TextSmall>
+const Container = glamorous(View)({
+    alignItems: "center",
+});
 
-            <Sign>
-                <SignImage />
-                <SignLine />
-                <TextSmall>Jyväskylän Laskuvarjokerho Ry</TextSmall>
-            </Sign>
-        </TextContainer>
-        <Footer>
-            <FooterText bold>
-                #{props.id}
-            </FooterText>
-            <FooterText>
-                , voimassa{" "}
-                {moment(props.date).add(2, "years").format("MM/YYYY")} saakka —
-                ilmoittautuminen kurssille www.skydivejkl.fi/tandem, tiedustelut
-                045 323 4200{" "}
-            </FooterText>
-        </Footer>
-    </CardContainer>;
+const TandemGift = (props: ITandemGift) =>
+    <Container>
+        <CardContainer>
+            <Background />
+            <Logo />
+            <TextContainer>
+                <Title>LAHJAKORTTI</Title>
+                <Line />
+                <Text>Tämän lahjakortin saaja</Text>
+                <Title>
+                    {props.name}
+                </Title>
+                <Text>on oikeutettu tandemhyppykurssiin</Text>
+                <TextSmall>(sisältää koulutuksen ja tandemhypyn)</TextSmall>
+
+                <Sign>
+                    <SignImage />
+                    <SignLine />
+                    <TextSmall>Jyväskylän Laskuvarjokerho Ry</TextSmall>
+                </Sign>
+            </TextContainer>
+            <Footer>
+                <FooterText bold>
+                    #{props.id}
+                </FooterText>
+                <FooterText>
+                    , voimassa{" "}
+                    {moment(props.date).add(2, "years").format("MM/YYYY")}{" "}
+                    saakka — ilmoittautuminen kurssille
+                    www.skydivejkl.fi/tandem, tiedustelut 045 323 4200{" "}
+                </FooterText>
+            </Footer>
+        </CardContainer>
+    </Container>;
 
 export default TandemGift;

@@ -1,62 +1,65 @@
 import React from "react";
-import qs from "qs";
 import glamorous from "glamorous";
 import {css} from "glamor";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import {View} from "./core";
+import {parseQS} from "./utils";
 import TandemGift from "./TandemGift";
+import RenderButton from "./RenderButton";
+import Email from "./Email";
 
 css.global("html,body", {
     padding: 0,
     margin: 0,
 });
 
-const MainContainer = glamorous(View)({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: "center",
-});
+const parseGiftQS = (search: string) => {
+    const ob = parseQS(search);
 
-interface IGiftProps {
-    name: string;
-    id: string;
-    email: string;
-}
-
-const parseQS = (search: string): IGiftProps => {
-    const ob: {
-        [key: string]: string | undefined;
-    } = qs.parse(search.slice(1));
     return {
         name: ob.name || "",
         id: ob.id || "",
         email: ob.email || "",
+        pdf: Boolean(ob.pdf),
     };
 };
 
-const Button = glamorous.button({
-    padding: 20,
-    margin: 40,
-});
+const parseEmailQS = (search: string) => {
+    const ob = parseQS(search);
+
+    return {
+        id: ob.id || "",
+        secret: ob.secret || "",
+    };
+};
+
+const Sep = glamorous.div({height: 50, width: 50});
 
 const Main = () =>
     <Router>
-        <Route
-            path="/tandem"
-            exact
-            render={props =>
-                <MainContainer>
-                    <Button>render pdf</Button>
-                    <TandemGift
-                        {...parseQS(props.location.search)}
-                        date={new Date()}
-                    />
-                </MainContainer>}
-        />
+        <Switch>
+            <Route
+                path="/tandem"
+                exact
+                render={props => {
+                    const ob = parseGiftQS(props.location.search);
+                    return (
+                        <View>
+                            {!ob.pdf && <RenderButton />}
+                            {ob.pdf && <Sep />}
+                            <TandemGift {...ob} date={new Date()} />
+                        </View>
+                    );
+                }}
+            />
+            <Route
+                path="/email"
+                exact
+                render={props =>
+                    <Email {...parseEmailQS(props.location.search)} />}
+            />
+        </Switch>
     </Router>;
 
 export default Main;

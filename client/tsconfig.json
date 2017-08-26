@@ -3,12 +3,14 @@
         "sourceMap": true,
         "module": "es6",
         "target": "es5",
+        "lib": ["es2017", "dom"],
         "jsx": "react",
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
         "strictNullChecks": true,
-        "noUnusedLocals": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": false,
         "moduleResolution": "node",
-        "noUnusedParameters": true
+        "noUnusedParameters": false
     }
 }
