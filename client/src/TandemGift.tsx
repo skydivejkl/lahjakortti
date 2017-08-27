@@ -94,7 +94,7 @@ const SignLine = glamorous(Line)({
     width: 250,
 });
 
-const FooterText = glamorous(View)<{bold?: boolean}>(
+const FooterText = glamorous("span")<{bold?: boolean}>(
     {
         fontSize: 10,
     },
@@ -138,15 +138,19 @@ const TandemGift = (props: ITandemGift) =>
                 </Sign>
             </TextContainer>
             <Footer>
-                <FooterText bold>
-                    #{props.id}
-                </FooterText>
-                <FooterText>
-                    , voimassa{" "}
-                    {moment(props.date).add(2, "years").format("MM/YYYY")}{" "}
-                    saakka — ilmoittautuminen kurssille
-                    www.skydivejkl.fi/tandem, tiedustelut 045 323 4200{" "}
-                </FooterText>
+                <div>
+                    <FooterText bold>
+                        #{props.id}
+                    </FooterText>
+                    <FooterText>
+                        , voimassa{" "}
+                        {moment(props.date)
+                            .add(2, "years")
+                            .format("MM/YYYY")}{" "}
+                        saakka — ilmoittautuminen kurssille
+                        www.skydivejkl.fi/tandem, tiedustelut 045 323 4200{" "}
+                    </FooterText>
+                </div>
             </Footer>
         </CardContainer>
     </Container>;
