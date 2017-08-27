@@ -19,6 +19,7 @@ const parseGiftQS = (search: string) => {
 
     return {
         name: ob.name || "",
+        payee: ob.payee || "",
         id: ob.id || "",
         email: ob.email || "",
         pdf: Boolean(ob.pdf),

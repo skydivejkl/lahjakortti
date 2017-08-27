@@ -3,7 +3,7 @@ import glamorous from "glamorous";
 
 import {View} from "./core";
 
-const SIZE = 300;
+const SIZE = 350;
 
 const PDFPreview = glamorous.iframe({
     display: "flex",
@@ -14,7 +14,7 @@ const PDFPreview = glamorous.iframe({
 const Sidebar = glamorous(View)({
     width: SIZE,
     alignItems: "center",
-    padding: 10,
+    padding: 5,
 });
 
 const Container = glamorous(View)({
@@ -29,7 +29,22 @@ const Container = glamorous(View)({
 interface IEmail {
     id: string;
     email: string;
+    payee: string;
+    name: string;
 }
+
+const renderMessage = (props: IEmail) =>
+    `
+Hei!
+
+Kiitos tilauksesta ${props.payee}!
+
+Tässä on liiteenä laskuvarjohyppylahjakortti henkilölle ${props.name}.
+
+Terveisin,
+Jyväskylän Laskuvarjokerho Ry
+
+`.trim();
 
 class Email extends React.Component<IEmail, {}> {
     form: HTMLFormElement | null;
@@ -101,8 +116,8 @@ class Email extends React.Component<IEmail, {}> {
                                 style={{width: "100%"}}
                                 required
                                 name="message"
-                                rows={10}
-                                defaultValue="Hei, kiitos tilauksesta! Lahjakorttisi on tässä liitteenä. \n\nTerveisin Jyväskylän laskuvarjokerho ry"
+                                rows={20}
+                                defaultValue={renderMessage(this.props)}
                             />
                         </label>
                         <input type="submit" value="Lähetä" />
