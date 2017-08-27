@@ -10,7 +10,7 @@ import * as fs from "fs";
 
 import config from "./config";
 
-const PORT = 8080;
+const PORT = config.port;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
 const PUBLIC = __dirname + "/../public";
 
