@@ -9,6 +9,7 @@ import * as nodemailer from "nodemailer";
 import * as puppeteer from "puppeteer";
 import * as fs from "fs";
 import * as qs from "querystring";
+import * as crypt from "crypto";
 
 import config from "./config";
 
@@ -175,17 +176,44 @@ app.use((ctx, next) => {
         return next();
     }
 
-    if (ctx.query.auth === INTERNAL_AUTH_KEY) {
+    const login = (query: Object) => {
         ctx.session.auth = true;
-        const {auth, ...otherQuery} = ctx.query;
+        ctx.redirect(ctx.path + "?" + qs.stringify(query));
+    };
 
-        ctx.redirect(ctx.path + "?" + qs.stringify(otherQuery));
-        return;
+    const deny = (msg: string) => {
+        ctx.status = 403;
+        ctx.body = "Bad auth: " + msg;
+    };
+
+    if (ctx.query.hmac && ctx.query.time) {
+        const {hmac, time, ...otherQuery} = ctx.query;
+
+        const mac = crypt.createHmac("sha256", config.authKey);
+        mac.update(time);
+
+        if (hmac !== mac.digest("hex")) {
+            return deny("bad hmac");
+        }
+
+        const ageSec = Date.now() / 1000 - parseInt(time, 10);
+        if (ageSec > 60 * 10) {
+            return deny("too old link");
+        }
+
+        return login(otherQuery);
     }
 
-    ctx.status = 403;
-    ctx.body = "Bad auth " + ctx.path;
-    return;
+    if (ctx.query.auth) {
+        const {auth, ...otherQuery} = ctx.query;
+        if (auth === INTERNAL_AUTH_KEY) {
+            return login(otherQuery);
+        } else {
+            return deny("bad internal auth key");
+        }
+    }
+
+    deny("No auth");
 });
 
 app.use(router.routes()).use(router.allowedMethods());
