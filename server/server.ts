@@ -137,7 +137,7 @@ router.post("/email", async ctx => {
         ],
     };
 
-    // await transport.sendMail(email);
+    await transport.sendMail(email);
 
     await fsp.writeFile(
         pdfPath.replace(/\.pdf$/, ".json"),
