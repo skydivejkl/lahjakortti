@@ -3,18 +3,27 @@ import * as Router from "koa-router";
 import * as serve from "koa-static";
 import * as mount from "koa-mount";
 import * as body from "koa-bodyparser";
+import * as session from "koa-session";
 import * as fsp from "mz/fs";
 import * as nodemailer from "nodemailer";
 import * as puppeteer from "puppeteer";
 import * as fs from "fs";
+import * as qs from "querystring";
 
 import config from "./config";
+
+const genKey = () =>
+    Math.random().toString(36).substring(2) +
+    Math.random().toString(36).substring(2);
 
 const PORT = config.port;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
 const PUBLIC = __dirname + "/../public";
+const INTERNAL_AUTH_KEY = genKey();
+console.log("INTERNAL_AUTH_KEY", INTERNAL_AUTH_KEY);
 
 var app = new Koa();
+app.keys = [genKey()];
 var router = new Router();
 
 const transport = nodemailer.createTransport(config.nodemailer);
@@ -72,7 +81,11 @@ router.post("/tandem", async ctx => {
         throw new Error("name missing");
     }
 
-    const url = INTERNAL_ADDRESS + ctx.req.url + "&pdf=1";
+    const url =
+        INTERNAL_ADDRESS +
+        ctx.req.url +
+        "&" +
+        qs.stringify({pdf: 1, auth: INTERNAL_AUTH_KEY});
     const pdfFSPath = getPDFPath(options.id, true);
 
     if (!force && (await fileExists(pdfFSPath))) {
@@ -154,7 +167,27 @@ router.post("/email", async ctx => {
     ctx.body += JSON.stringify(email, null, "    ");
 });
 
+app.use(session(app));
 app.use(body());
+
+app.use((ctx, next) => {
+    if (ctx.session.auth) {
+        return next();
+    }
+
+    if (ctx.query.auth === INTERNAL_AUTH_KEY) {
+        ctx.session.auth = true;
+        const {auth, ...otherQuery} = ctx.query;
+
+        ctx.redirect(ctx.path + "?" + qs.stringify(otherQuery));
+        return;
+    }
+
+    ctx.status = 403;
+    ctx.body = "Bad auth " + ctx.path;
+    return;
+});
+
 app.use(router.routes()).use(router.allowedMethods());
 app.use(mount("/assets", serve(PUBLIC)));
 
