@@ -21,7 +21,7 @@ const PORT = config.port;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
 const PUBLIC = __dirname + "/../public";
 const INTERNAL_AUTH_KEY = genKey();
-console.log("INTERNAL_AUTH_KEY", INTERNAL_AUTH_KEY);
+console.log("INTERNAL_AUTH_KEY &auth=" + INTERNAL_AUTH_KEY);
 
 var app = new Koa();
 app.keys = [genKey()];
@@ -173,6 +173,10 @@ app.use(session(app));
 app.use(body());
 
 app.use((ctx, next) => {
+    if (process.env.DISABLE_AUTH) {
+        return next();
+    }
+
     const login = (query: Object) => {
         ctx.session.auth = true;
         ctx.redirect(ctx.path + "?" + qs.stringify(query));
