@@ -39,7 +39,7 @@ Hei!
 
 Kiitos tilauksesta ${props.payee}!
 
-Tässä on liiteenä laskuvarjohyppylahjakortti henkilölle ${props.name}.
+Tässä on liitteenä laskuvarjohyppylahjakortti henkilölle ${props.name}.
 
 Terveisin,
 Jyväskylän Laskuvarjokerho Ry
