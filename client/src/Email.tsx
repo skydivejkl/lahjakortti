@@ -53,12 +53,6 @@ class Email extends React.Component<IEmail, {}> {
         e.preventDefault();
         if (this.form) {
             this.form.submit();
-            Array.prototype.map.call(
-                this.form.elements,
-                (el: HTMLInputElement) => {
-                    el.value;
-                },
-            );
         }
     };
 
