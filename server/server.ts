@@ -172,10 +172,6 @@ app.use(session(app));
 app.use(body());
 
 app.use((ctx, next) => {
-    if (ctx.session.auth) {
-        return next();
-    }
-
     const login = (query: Object) => {
         ctx.session.auth = true;
         ctx.redirect(ctx.path + "?" + qs.stringify(query));
@@ -211,6 +207,10 @@ app.use((ctx, next) => {
         } else {
             return deny("bad internal auth key");
         }
+    }
+
+    if (ctx.session.auth) {
+        return next();
     }
 
     deny("No auth");
