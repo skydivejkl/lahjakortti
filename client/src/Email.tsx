@@ -88,7 +88,7 @@ class Email extends React.Component<IEmail, {}> {
                             <br />
                             <input
                                 required
-                                type="email"
+                                type="text"
                                 name="email"
                                 defaultValue={this.props.email}
                             />
