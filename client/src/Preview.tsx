@@ -6,7 +6,14 @@ import {IBaseGift} from "./BaseGift";
 
 const amountRe = /^ *summa +([0-9]+) *$/i;
 
-const Preview = (props: IBaseGift) => {
+interface IPreview {
+    type: string;
+    name: string;
+    id: string;
+    date: Date;
+}
+
+const Preview = (props: IPreview) => {
     const amountMatch = amountRe.exec(props.type);
     if (amountMatch) {
         return (
