@@ -139,6 +139,7 @@ router.post("/email", async ctx => {
     const email = {
         from: "tandem@skydivejkl.fi",
         to: options.email,
+        bcc: "tandem@skydivejkl.fi",
         subject: options.subject,
         text: options.message,
         attachments: [
