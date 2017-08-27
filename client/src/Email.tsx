@@ -27,16 +27,20 @@ const Container = glamorous(View)({
 
 interface IEmail {
     id: string;
-    secret: string;
 }
 
-const Email = (props: IEmail) =>
-    <Container>
-        <Sidebar>TODO: tähä lähetys nappi</Sidebar>
-        <PDFPreview
-            frameBorder={0}
-            src={`/assets/pdf/${props.id}-${props.secret}.pdf`}
-        />
-    </Container>;
+const Email = (props: IEmail) => {
+    const url = `/assets/pdf/${props.id}.pdf`;
+    return (
+        <Container>
+            <Sidebar>
+                <a href={url} download>
+                    Lataa
+                </a>
+            </Sidebar>
+            <PDFPreview frameBorder={0} src={url} />
+        </Container>
+    );
+};
 
 export default Email;
