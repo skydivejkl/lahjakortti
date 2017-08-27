@@ -159,7 +159,7 @@ app.use(router.routes()).use(router.allowedMethods());
 app.use(mount("/assets", serve(PUBLIC)));
 
 app.listen(PORT, () => {
-    console.log("Listening", 8080);
+    console.log("Listening", PORT);
 });
 
 (async () => {
