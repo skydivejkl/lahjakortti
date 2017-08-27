@@ -11,7 +11,11 @@ const Button = glamorous.button({
     alignSelf: "center",
 });
 
-const initialState = {sending: false, error: false, data: {ok: false}};
+const initialState = {
+    sending: false,
+    error: false,
+    data: {ok: false, exists: false},
+};
 
 type MaybeObject = null | {
     [key: string]: MaybeObject;
@@ -33,12 +37,23 @@ class RenderButton extends React.Component<{}, typeof initialState> {
     }
 
     handleClick = async () => {
-        console.log("click", this.state);
+        await this.createPDF();
+
+        if (this.state.data.exists) {
+            if (confirm("PDF on jo olemassa, luodaanko uusi?")) {
+                await this.createPDF(true);
+            } else {
+                this.setState({data: {ok: true, exists: true}});
+            }
+        }
+    };
+
+    createPDF = async (force = false) => {
         this.setState({sending: true, error: false});
         let res = null;
 
         try {
-            res = await axios.post(window.location.toString());
+            res = await axios.post(window.location.toString(), {force});
         } catch (err) {
             this.setState({error: true});
             let aErr = getMaybe<AxiosResponse>(err, err => err && err.response);
@@ -65,6 +80,9 @@ class RenderButton extends React.Component<{}, typeof initialState> {
 
         if (this.state.sending) {
             msg = "Puuhaillaan...";
+            if (this.state.data.exists) {
+                msg = "Ylikirjoitetaan...";
+            }
         }
 
         if (this.state.data.ok) {

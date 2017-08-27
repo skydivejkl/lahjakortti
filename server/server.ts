@@ -4,6 +4,7 @@ import * as serve from "koa-static";
 import * as mount from "koa-mount";
 import * as body from "koa-bodyparser";
 import * as fsp from "mz/fs";
+import * as nodemailer from "nodemailer";
 
 import * as fs from "fs";
 
@@ -40,6 +41,16 @@ const fileExists = async (path: string) => {
     return false;
 };
 
+const getPDFPath = (id: string, full = true) => {
+    const pdfPath = `/pdf/${id}.pdf`;
+
+    if (full) {
+        return PUBLIC + pdfPath;
+    }
+
+    return pdfPath;
+};
+
 router.get("/tandem", serveIndex);
 router.get("/email", serveIndex);
 
@@ -60,8 +71,7 @@ router.post("/tandem", async ctx => {
     }
 
     const url = INTERNAL_ADDRESS + ctx.req.url + "&pdf=1";
-    const pdfPath = `/pdf/${options.id}.pdf`;
-    const pdfFSPath = PUBLIC + pdfPath;
+    const pdfFSPath = getPDFPath(options.id, true);
 
     if (!force && (await fileExists(pdfFSPath))) {
         ctx.body = {
@@ -87,10 +97,78 @@ router.post("/tandem", async ctx => {
     };
 });
 
+router.post("/email", async ctx => {
+    const options: {
+        id?: string;
+        email?: string;
+        message?: string;
+        subject?: string;
+    } =
+        ctx.request.body;
+
+    if (!options.id) {
+        throw new Error("id missing");
+    }
+
+    if (!options.message) {
+        throw new Error("message missing");
+    }
+
+    if (!options.subject) {
+        throw new Error("subject missing");
+    }
+
+    const pdfPath = getPDFPath(options.id, true);
+
+    const email = {
+        from: "tandem@skydivejkl.fi",
+        to: options.email,
+        subject: options.subject,
+        text: options.message,
+        attachments: [
+            {
+                filename: `lahjakortti-${options.id}.pdf`,
+                path: pdfPath,
+                contentType: "application/pdf",
+                content: "",
+            },
+        ],
+    };
+
+    // await transport.sendMail(email);
+
+    await fsp.writeFile(
+        pdfPath.replace(/\.pdf$/, ".json"),
+        JSON.stringify(
+            {...email, sentTimestamp: new Date().toString()},
+            null,
+            "    ",
+        ),
+    );
+
+    ctx.body = "Lähetetty.";
+    ctx.body += "\n";
+    ctx.body += "\n";
+    ctx.body += JSON.stringify(email, null, "    ");
+});
+
 app.use(body());
 app.use(router.routes()).use(router.allowedMethods());
 app.use(mount("/assets", serve(PUBLIC)));
 
 app.listen(PORT, () => {
     console.log("Listening", 8080);
+});
+
+(async () => {
+    const success = await transport.verify();
+    if (success) {
+        console.log("Mail connection ok");
+    } else {
+        throw new Error("Failed to connect smtp server");
+    }
+})().catch(error => {
+    setTimeout(() => {
+        throw error;
+    }, 1);
 });
