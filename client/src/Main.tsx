@@ -25,15 +25,6 @@ const parseGiftQS = (search: string) => {
     };
 };
 
-const parseEmailQS = (search: string) => {
-    const ob = parseQS(search);
-
-    return {
-        id: ob.id || "",
-        secret: ob.secret || "",
-    };
-};
-
 const Sep = glamorous.div({height: 50, width: 50});
 
 const Main = () =>
@@ -57,7 +48,7 @@ const Main = () =>
                 path="/email"
                 exact
                 render={props =>
-                    <Email {...parseEmailQS(props.location.search)} />}
+                    <Email {...parseGiftQS(props.location.search)} />}
             />
         </Switch>
     </Router>;

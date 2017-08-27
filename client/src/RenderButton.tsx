@@ -11,7 +11,7 @@ const Button = glamorous.button({
     alignSelf: "center",
 });
 
-const initialState = {sending: false, error: false, data: {id: "", secret: ""}};
+const initialState = {sending: false, error: false, data: {ok: false}};
 
 type MaybeObject = null | {
     [key: string]: MaybeObject;
@@ -67,10 +67,8 @@ class RenderButton extends React.Component<{}, typeof initialState> {
             msg = "Puuhaillaan...";
         }
 
-        if (this.state.data.id) {
-            return (
-                <Redirect push to={"/email?" + qs.stringify(this.state.data)} />
-            );
+        if (this.state.data.ok) {
+            return <Redirect push to={"/email" + window.location.search} />;
         }
 
         return (
