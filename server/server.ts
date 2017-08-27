@@ -5,10 +5,10 @@ import * as mount from "koa-mount";
 import * as body from "koa-bodyparser";
 import * as fsp from "mz/fs";
 import * as nodemailer from "nodemailer";
-
+import * as puppeteer from "puppeteer";
 import * as fs from "fs";
 
-import * as puppeteer from "puppeteer";
+import config from "./config";
 
 const PORT = 8080;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
@@ -16,6 +16,8 @@ const PUBLIC = __dirname + "/../public";
 
 var app = new Koa();
 var router = new Router();
+
+const transport = nodemailer.createTransport(config.nodemailer);
 
 const serveIndex = async (ctx: Router.IRouterContext) => {
     const s = fs.createReadStream(PUBLIC + "/index.html");
