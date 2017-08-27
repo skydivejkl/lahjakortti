@@ -7,13 +7,18 @@ import {IBaseGift} from "./BaseGift";
 const amountRe = /^ *summa +([0-9]+) *$/i;
 
 const Preview = (props: IBaseGift) => {
-    console.log("Testing", props.type);
     const amountMatch = amountRe.exec(props.type);
     if (amountMatch) {
-        return <AmountGift {...props} amount={parseInt(amountMatch[1], 10)} />;
+        return (
+            <AmountGift
+                {...props}
+                bg="solo"
+                amount={parseInt(amountMatch[1], 10)}
+            />
+        );
     }
 
-    return <TandemGift {...props} />;
+    return <TandemGift bg="tandem" {...props} />;
 };
 
 export default Preview;

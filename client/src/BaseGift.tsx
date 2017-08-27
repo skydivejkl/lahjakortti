@@ -40,17 +40,25 @@ export const Title = glamorous(View)({
     justifyContent: "center",
 });
 
-const Background = glamorous(View)({
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+interface IBackground {
+    type: "tandem" | "solo";
+}
 
-    backgroundImage: "url(assets/tandem.jpg)",
-    backgroundSize: "contain",
-    backgroundRepeat: "no-repeat",
-});
+const Background = glamorous(View)<IBackground>(
+    {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+    },
+    props => ({
+        backgroundImage: `url(assets/${props.type}.jpg)`,
+    }),
+);
 
 export const Text = glamorous(View)({
     fontSize: 18,
@@ -110,6 +118,7 @@ export interface IBaseGift {
     id: string;
     date: Date;
     type: string;
+    bg: "tandem" | "solo";
 }
 
 const Container = glamorous(View)({
@@ -119,7 +128,7 @@ const Container = glamorous(View)({
 const BaseGift = (props: IBaseGift & {footerText: string; children?: any}) =>
     <Container>
         <CardContainer>
-            <Background />
+            <Background type={props.bg} />
             <Logo />
             <TextContainer>
                 <Title>LAHJAKORTTI</Title>
