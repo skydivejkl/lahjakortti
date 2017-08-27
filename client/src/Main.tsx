@@ -5,9 +5,9 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import {View} from "./core";
 import {parseQS} from "./utils";
-import TandemGift from "./TandemGift";
 import RenderButton from "./RenderButton";
 import Email from "./Email";
+import Preview from "./Preview";
 
 css.global("html,body", {
     padding: 0,
@@ -19,6 +19,7 @@ const parseGiftQS = (search: string) => {
 
     return {
         name: ob.name || "",
+        type: ob.type || "",
         payee: ob.payee || "",
         id: ob.id || "",
         email: ob.email || "",
@@ -32,7 +33,7 @@ const Main = () =>
     <Router>
         <Switch>
             <Route
-                path="/tandem"
+                path="/preview"
                 exact
                 render={props => {
                     const ob = parseGiftQS(props.location.search);
@@ -40,7 +41,7 @@ const Main = () =>
                         <View>
                             {!ob.pdf && <RenderButton />}
                             {ob.pdf && <Sep />}
-                            <TandemGift {...ob} date={new Date()} />
+                            <Preview {...ob} date={new Date()} />
                         </View>
                     );
                 }}

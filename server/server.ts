@@ -63,10 +63,10 @@ const getPDFPath = (id: string, full = true) => {
     return pdfPath;
 };
 
-router.get("/tandem", serveIndex);
+router.get("/preview", serveIndex);
 router.get("/email", serveIndex);
 
-router.post("/tandem", async ctx => {
+router.post("/preview", async ctx => {
     const options: {id?: string; name?: string} = ctx.query;
     const force = Boolean(ctx.request.body.force);
 
