@@ -2,13 +2,6 @@
     "name": "client",
     "version": "1.0.0",
     "description": "",
-    "scripts": {
-        "server": "cd src/server && ts-node server.ts",
-        "server-dev": "sh -c 'DISABLE_AUTH=1 nodemon --ext ts --exec npm server'",
-        "build-client": "webpack -p",
-        "build-server": "cd src/server && tsc",
-        "js-server": "webpack-dev-server  --port  8081 --inline"
-    },
     "author": "",
     "license": "ISC",
     "dependencies": {
