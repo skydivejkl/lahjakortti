@@ -14,6 +14,7 @@ case ${1:-} in
         webpack -p
    ;;
    build-server)
+        mkdir -p lib/server
         cd src/server
         tsc
         cd -
