@@ -3,8 +3,11 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "webpack -p",
-        "start": "webpack-dev-server  --port  8081 --inline"
+        "server": "cd src/server && ts-node server.ts",
+        "server-dev": "sh -c 'DISABLE_AUTH=1 nodemon --ext ts --exec npm server'",
+        "build-client": "webpack -p",
+        "build-server": "cd src/server && tsc",
+        "js-server": "webpack-dev-server  --port  8081 --inline"
     },
     "author": "",
     "license": "ISC",
@@ -33,6 +36,25 @@
         "source-map-loader": "^0.2.1",
         "typescript": "^2.4.2",
         "webpack": "^3.5.5",
-        "webpack-dev-server": "^2.7.1"
+        "webpack-dev-server": "^2.7.1",
+        "@types/koa": "^2.0.39",
+        "@types/koa-bodyparser": "^3.0.24",
+        "@types/koa-mount": "^2.0.18",
+        "@types/koa-router": "^7.0.23",
+        "@types/koa-session": "^3.0.4",
+        "@types/koa-static": "^3.0.1",
+        "@types/mz": "0.0.31",
+        "@types/nodemailer": "^3.1.2",
+        "koa": "^2.3.0",
+        "koa-bodyparser": "^4.2.0",
+        "koa-mount": "^3.0.0",
+        "koa-router": "^7.2.1",
+        "koa-session": "^5.5.0",
+        "koa-static": "^4.0.1",
+        "mz": "^2.6.0",
+        "nodemailer": "^4.0.1",
+        "nodemon": "^1.11.0",
+        "puppeteer": "^0.10.1",
+        "ts-node": "^3.3.0"
     }
 }

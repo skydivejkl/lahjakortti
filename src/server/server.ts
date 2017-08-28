@@ -19,9 +19,12 @@ const genKey = () =>
 
 const PORT = config.port;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
-const PUBLIC = __dirname + "/../public";
+const PUBLIC = __dirname + "/../../public";
 const INTERNAL_AUTH_KEY = genKey();
 console.log("INTERNAL_AUTH_KEY &auth=" + INTERNAL_AUTH_KEY);
+
+console.log(fs.realpathSync(PUBLIC));
+process.exit();
 
 var app = new Koa();
 app.keys = [genKey()];
