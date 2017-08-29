@@ -31,7 +31,7 @@ case ${1:-} in
         exec nodemon --ext ts --exec sh $self server
    ;;
    install-git-hook)
-   cat > .git/hooks/post-receive <<EOF
+        cat > .git/hooks/post-receive <<EOF
 #!/bin/sh
 set -eu
 cd ..
