@@ -30,6 +30,22 @@ case ${1:-} in
         export DISABLE_AUTH=1
         exec nodemon --ext ts --exec sh $self server
    ;;
+   install-git-hook)
+   cat > .git/hooks/post-receive <<EOF
+#!/bin/sh
+set -eu
+cd ..
+unset GIT_DIR GIT_WORK_TREE
+git reset --hard master
+sh make.sh production-update
+EOF
+        chmod a+x .git/hooks/post-receive
+   ;;
+   production-update)
+        $self install-git-hook
+        $self
+        sudo systemctl restart lahjakortti
+   ;;
    "")
         $self deps
         $self build-client
