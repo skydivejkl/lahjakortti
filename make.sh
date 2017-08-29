@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -eu
 
 export PATH=$(pwd)/node_modules/.bin/:$PATH
@@ -35,7 +35,6 @@ case ${1:-} in
 #!/bin/sh
 set -eu
 cd ..
-. /etc/profile
 unset GIT_DIR GIT_WORK_TREE
 git reset --hard master
 sh make.sh production-update
