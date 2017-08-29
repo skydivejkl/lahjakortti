@@ -35,6 +35,7 @@ case ${1:-} in
 #!/bin/sh
 set -eu
 cd ..
+. /etc/profile
 unset GIT_DIR GIT_WORK_TREE
 git reset --hard master
 sh make.sh production-update
