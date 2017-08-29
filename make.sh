@@ -37,7 +37,7 @@ set -eu
 cd ..
 unset GIT_DIR GIT_WORK_TREE
 git reset --hard master
-sh make.sh production-update
+exec sh make.sh production-update
 EOF
         chmod a+x .git/hooks/post-receive
    ;;
