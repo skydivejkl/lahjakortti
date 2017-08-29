@@ -2,7 +2,7 @@
 set -eu
 
 export PATH=$(pwd)/node_modules/.bin/:$PATH
-self=$0
+self="sh $0"
 
 set -x
 
