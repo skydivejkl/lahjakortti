@@ -32,7 +32,7 @@ case ${1:-} in
    ;;
    install-git-hook)
         cat > .git/hooks/post-receive <<EOF
-#!/bin/bash -l
+#!/bin/sh -l
 set -eu
 cd ..
 unset GIT_DIR GIT_WORK_TREE
