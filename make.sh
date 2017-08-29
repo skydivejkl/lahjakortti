@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -eu
 
 export PATH=$(pwd)/node_modules/.bin/:$PATH
@@ -32,7 +32,7 @@ case ${1:-} in
    ;;
    install-git-hook)
         cat > .git/hooks/post-receive <<EOF
-#!/bin/sh
+#!/bin/bash -l
 set -eu
 cd ..
 unset GIT_DIR GIT_WORK_TREE
