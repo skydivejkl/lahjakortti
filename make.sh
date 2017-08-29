@@ -27,7 +27,7 @@ case ${1:-} in
         exec ts-node server.ts
    ;;
    server-dev)
-        DISABLE_AUTH=1
+        export DISABLE_AUTH=1
         exec nodemon --ext ts --exec sh $self server
    ;;
    "")
