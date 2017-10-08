@@ -125,7 +125,7 @@ const Container = glamorous(View)({
     alignItems: "center",
 });
 
-const BaseGift = (props: IBaseGift & {footerText: string; children?: any}) =>
+const BaseGift = (props: IBaseGift & {footerText: string; children?: any}) => (
     <Container>
         <CardContainer>
             <Background type={props.bg} />
@@ -143,9 +143,7 @@ const BaseGift = (props: IBaseGift & {footerText: string; children?: any}) =>
             </TextContainer>
             <Footer>
                 <div>
-                    <FooterText bold>
-                        #{props.id}
-                    </FooterText>
+                    <FooterText bold>#{props.id}</FooterText>
                     <FooterText>
                         , voimassa{" "}
                         {moment(props.date)
@@ -156,6 +154,7 @@ const BaseGift = (props: IBaseGift & {footerText: string; children?: any}) =>
                 </div>
             </Footer>
         </CardContainer>
-    </Container>;
+    </Container>
+);
 
 export default BaseGift;

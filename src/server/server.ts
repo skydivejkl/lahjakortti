@@ -14,8 +14,12 @@ import * as crypt from "crypto";
 import config from "./config";
 
 const genKey = () =>
-    Math.random().toString(36).substring(2) +
-    Math.random().toString(36).substring(2);
+    Math.random()
+        .toString(36)
+        .substring(2) +
+    Math.random()
+        .toString(36)
+        .substring(2);
 
 const PORT = config.port;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
