@@ -118,6 +118,7 @@ export interface IBaseGift {
     id: string;
     date: Date;
     type: string;
+    time: number;
     bg: "tandem" | "solo";
 }
 
@@ -147,7 +148,7 @@ const BaseGift = (props: IBaseGift & {footerText: string; children?: any}) => (
                     <FooterText>
                         , voimassa{" "}
                         {moment(props.date)
-                            .add(2, "years")
+                            .add(props.time, "years")
                             .format("MM/YYYY")}{" "}
                         saakka — {props.footerText}
                     </FooterText>

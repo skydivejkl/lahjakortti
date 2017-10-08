@@ -23,6 +23,7 @@ const parseGiftQS = (search: string) => {
         payee: ob.payee || "",
         id: ob.id || "",
         email: ob.email || "",
+        time: parseInt(ob.time || "0", 10) || 2,
         pdf: Boolean(ob.pdf),
     };
 };

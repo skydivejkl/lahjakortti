@@ -12,6 +12,7 @@ interface IPreview {
     name: string;
     id: string;
     date: Date;
+    time: number;
 }
 
 const Preview = (props: IPreview) => {
