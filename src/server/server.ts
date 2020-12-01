@@ -14,12 +14,8 @@ import * as crypt from "crypto";
 import config from "./config";
 
 const genKey = () =>
-    Math.random()
-        .toString(36)
-        .substring(2) +
-    Math.random()
-        .toString(36)
-        .substring(2);
+    Math.random().toString(36).substring(2) +
+    Math.random().toString(36).substring(2);
 
 const PORT = config.port;
 const INTERNAL_ADDRESS = `http://localhost:${PORT}`;
@@ -70,8 +66,8 @@ const getPDFPath = (id: string, full = true) => {
 router.get("/preview", serveIndex);
 router.get("/email", serveIndex);
 
-router.post("/preview", async ctx => {
-    const options: {id?: string; name?: string} = ctx.query;
+router.post("/preview", async (ctx) => {
+    const options: { id?: string; name?: string } = ctx.query;
     const force = Boolean(ctx.request.body.force);
 
     if (!options.id) {
@@ -90,7 +86,7 @@ router.post("/preview", async ctx => {
         INTERNAL_ADDRESS +
         ctx.req.url +
         "&" +
-        qs.stringify({pdf: 1, auth: INTERNAL_AUTH_KEY});
+        qs.stringify({ pdf: 1, auth: INTERNAL_AUTH_KEY });
     const pdfFSPath = getPDFPath(options.id, true);
 
     if (!force && (await fileExists(pdfFSPath))) {
@@ -104,7 +100,7 @@ router.post("/preview", async ctx => {
 
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto(url, {waitUntil: "networkidle"});
+    await page.goto(url, { waitUntil: "networkidle" });
     await page.pdf({
         path: pdfFSPath,
         format: "A4",
@@ -117,14 +113,13 @@ router.post("/preview", async ctx => {
     };
 });
 
-router.post("/email", async ctx => {
+router.post("/email", async (ctx) => {
     const options: {
         id?: string;
         email?: string;
         message?: string;
         subject?: string;
-    } =
-        ctx.request.body;
+    } = ctx.request.body;
 
     if (!options.id) {
         throw new Error("id missing");
@@ -161,7 +156,7 @@ router.post("/email", async ctx => {
     await fsp.writeFile(
         pdfPath.replace(/\.pdf$/, ".json"),
         JSON.stringify(
-            {...email, sentTimestamp: new Date().toString()},
+            { ...email, sentTimestamp: new Date().toString() },
             null,
             "    ",
         ),
@@ -192,7 +187,7 @@ app.use((ctx, next) => {
     };
 
     if (ctx.query.hmac && ctx.query.time) {
-        const {hmac, time, ...otherQuery} = ctx.query;
+        const { hmac, time, ...otherQuery } = ctx.query;
 
         const mac = crypt.createHmac("sha256", config.authKey);
         mac.update(time);
@@ -210,7 +205,7 @@ app.use((ctx, next) => {
     }
 
     if (ctx.query.auth) {
-        const {auth, ...otherQuery} = ctx.query;
+        const { auth, ...otherQuery } = ctx.query;
         if (auth === INTERNAL_AUTH_KEY) {
             return login(otherQuery);
         } else {
@@ -233,13 +228,19 @@ app.listen(PORT, () => {
 });
 
 (async () => {
+    const anyConfig = config as any;
+    if (anyConfig.nodemailer.streamTransport) {
+        // No need to check the streamTransport
+        return;
+    }
+
     const success = await transport.verify();
     if (success) {
         console.log("Mail connection ok");
     } else {
         throw new Error("Failed to connect smtp server");
     }
-})().catch(error => {
+})().catch((error) => {
     setTimeout(() => {
         throw error;
     }, 1);

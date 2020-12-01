@@ -3,7 +3,8 @@ import React from "react";
 import TandemGift from "./TandemGift";
 import AmountGift from "./AmountGift";
 import SoloGift from "./SoloGift";
-import {IBaseGift} from "./BaseGift";
+import GenericGift from "./GenericGift";
+import { IBaseGift } from "./BaseGift";
 
 const amountRe = /^ *summa +([0-9]+) *$/i;
 
@@ -26,7 +27,11 @@ const Preview = (props: IPreview) => {
         return <SoloGift {...props} />;
     }
 
-    return <TandemGift {...props} />;
+    if (/tandem/i.test(props.type)) {
+        return <TandemGift {...props} />;
+    }
+
+    return <GenericGift {...props} />;
 };
 
 export default Preview;
