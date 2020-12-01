@@ -4,6 +4,9 @@
     "description": "",
     "author": "",
     "license": "ISC",
+    "scripts": {
+        "dev": "concurrently 'cd src/server && nodemon --ext ts --exec ts-node server.ts' 'webpack-dev-server --port 8081 --inline'"
+    },
     "dependencies": {
         "@types/qs": "^6.5.0",
         "@types/react": "^16.0.5",
