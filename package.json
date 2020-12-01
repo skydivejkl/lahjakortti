@@ -52,5 +52,11 @@
         "nodemon": "^1.11.0",
         "puppeteer": "^0.10.1",
         "ts-node": "^3.3.0"
+    },
+    "devDependencies": {
+        "concurrently": "^5.3.0"
+    },
+    "volta": {
+        "node": "8.4.0"
     }
 }
