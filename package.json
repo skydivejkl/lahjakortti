@@ -5,7 +5,7 @@
     "author": "",
     "license": "ISC",
     "scripts": {
-        "build": "webpack -p",
+        "build": "./make-sh build-client && ./make-sh build-server",
         "start": "node lib/server/server.js",
         "dev": "concurrently 'cd src/server && nodemon --ext ts --exec ts-node server.ts' 'webpack-dev-server --port 8081 --inline'"
     },
