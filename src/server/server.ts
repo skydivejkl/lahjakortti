@@ -228,6 +228,7 @@ app.listen(PORT, () => {
 });
 
 (async () => {
+    console.log("env", process.env);
     const anyConfig = config as any;
     if (anyConfig.nodemailer.streamTransport) {
         // No need to check the streamTransport
