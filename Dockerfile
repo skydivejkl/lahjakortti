@@ -21,7 +21,7 @@ RUN mkdir -p /app
 WORKDIR /app
 RUN chown -R app:root /app
 
-COPY --chown=app:root *.js *.json src public /app/
+COPY --chown=app:root make.sh *.js *.json src public /app/
 
 USER app
 
