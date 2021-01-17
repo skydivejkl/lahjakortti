@@ -18,7 +18,7 @@ RUN echo 'kernel.unprivileged_userns_clone=1' > /etc/sysctl.d/userns.conf
 ENV NODE_ENV=production
 ARG NODE_ENV=production
 
-RUN adduser --system app
+RUN adduser --system app --group root
 RUN mkdir -p /app
 WORKDIR /app
 RUN chown -R app:root /app
