@@ -7,6 +7,7 @@
     "scripts": {
         "build": "sh ./make.sh build-client && sh ./make.sh build-server",
         "start": "node lib/server/server.js",
+        "deploy": "sh deploy.sh",
         "dev": "concurrently 'cd src/server && nodemon --ext ts --exec ts-node server.ts' 'webpack-dev-server --port 8081 --inline'"
     },
     "dependencies": {
